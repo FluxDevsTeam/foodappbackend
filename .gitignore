@@ -1,3 +1,16 @@
+.idea
+venv/
+.env
+db.sqlite3
+image/
+media/
+**/migrations/*.py
+!**/migrations/__init__.py
+staticfiles/
+static/
+img/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
