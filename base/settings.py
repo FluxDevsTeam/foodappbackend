@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ["api.asluxuryoriginals.com", "www.api.asluxuryoriginals.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 
@@ -45,10 +45,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_filters',
-    'customuser',
     'drf_yasg',
     'ecommerce',
     'vendor',
+    'orders',
     'delivery',
     'api',
     'authentication',
@@ -64,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -152,7 +151,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'customuser.User'
+AUTH_USER_MODEL = 'authentication.User'
 FLW_SEC_KEY = os.getenv("FLW_SEC_KEY")
 
 REST_FRAMEWORK = {
