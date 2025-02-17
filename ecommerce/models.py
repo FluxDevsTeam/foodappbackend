@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
+from django.conf import settings
+from vendor.models import Vendor
 
 
 # User Profile (For additional fields)
@@ -10,7 +10,7 @@ class Profile(models.Model):
         ('rider', 'Rider'),
         ('vendor', 'Vendor'),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15, unique=True)
     address = models.TextField(blank=True, null=True)
     user_type = models.CharField(max_length=10, choices=USER_TYPES, default='customer')
@@ -35,7 +35,7 @@ class Product(models.Model):
 
 # Cart Model
 class Cart(models.Model):
-    customer = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
+    customer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -55,10 +55,32 @@ class CartItem(models.Model):
 
 # Wishlist Model
 class Wishlist(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wishlist')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.customer.username} - {self.product.name}'
+
+
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    rating = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.user.username} on {self.product.name}'
+
+
+class FoodRating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='food_ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(default=1)
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'FoodRating by {self.user.username} on {self.product.name}'
 
