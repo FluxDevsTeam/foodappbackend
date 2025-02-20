@@ -7,7 +7,6 @@ from vendor.models import Vendor
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('on_the_way', 'On the way'),
         ('delivered', 'Delivered'),
